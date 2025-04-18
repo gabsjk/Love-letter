@@ -1,101 +1,125 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Love Letter</title>
+  <title>Cartinha Interativa</title>
   <style>
     body {
+      background: linear-gradient(135deg, #ffd9ec, #ffe6fa);
       margin: 0;
       padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle, #ffd6ec, #ffcce1, #ffb3d1);
       overflow: hidden;
-      position: relative;
-      font-family: 'Segoe UI', sans-serif;
-    }.background {
+      font-family: 'Arial', sans-serif;
+    }.animated-bg {
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: 0;
+  z-index: -2;
 }
 
-.background span {
+.star, .heart {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  animation: float 10s linear infinite;
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  animation: float 10s infinite linear;
+}
+
+.star {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Emoji_u2728.svg/2048px-Emoji_u2728.svg.png') no-repeat center/contain;
+}
+
+.heart {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Emoji_u2764.svg/2048px-Emoji_u2764.svg.png') no-repeat center/contain;
 }
 
 @keyframes float {
-  0% { transform: translateY(100vh); }
-  100% { transform: translateY(-10vh); }
+  0% { transform: translateY(100vh) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(360deg); }
 }
 
-.card {
+.card-container {
   position: relative;
   width: 300px;
   height: 200px;
-  background: #fff0f5;
-  border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 100px auto;
+  perspective: 1000px;
   cursor: pointer;
-  transform-style: preserve-3d;
+}
+
+.envelope {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffb6d9;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 1s;
+  backface-visibility: hidden;
+  z-index: 2;
+}
+
+.paper {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ff1493;
+  font-weight: bold;
+  transition: top 1s;
   z-index: 1;
 }
 
-.card.open {
-  transform: rotateY(180deg);
+.opened .envelope {
+  transform: rotateX(180deg);
 }
 
-.message {
-  font-size: 24px;
-  color: #ff4d88;
-  display: none;
-}
-
-.card.open .message {
-  display: block;
-}
-
-audio {
-  display: none;
+.opened .paper {
+  top: 0;
 }
 
   </style>
 </head>
 <body>
-  <div class="background">
-    <!-- Estrelas, luas, corações e flores animadas -->
-    <span style="width:20px; height:20px; left:10%; top:90%; background:#fff3cd;"></span>
-    <span style="width:15px; height:15px; left:25%; top:95%; background:#ffd1dc;"></span>
-    <span style="width:25px; height:25px; left:50%; top:100%; background:#fff;"></span>
-    <span style="width:18px; height:18px; left:70%; top:85%; background:#ffe6f2;"></span>
-    <span style="width:22px; height:22px; left:90%; top:95%; background:#fcd5ce;"></span>
-  </div>  <div class="card" id="card">
-    <div class="message" id="message">I love you</div>
-  </div><audio id="loveAudio" src="until_i_found_you_clip.mp3"></audio>
-
-  <script>
+  <div class="animated-bg" id="animated-bg"></div>  <div class="card-container" id="card">
+    <div class="envelope">Clique para abrir</div>
+    <div class="paper">I love you ♡</div>
+  </div>  <audio id="music" preload="auto">
+    <source src="/mnt/data/until_i_found_you_clip.mp3" type="audio/mpeg">
+  </audio>  <script>
     const card = document.getElementById('card');
-    const audio = document.getElementById('loveAudio');
+    const music = document.getElementById('music');
+    let opened = false;
 
     card.addEventListener('click', () => {
-      card.classList.toggle('open');
-      if (card.classList.contains('open')) {
-        audio.currentTime = 0;
-        audio.play();
-      } else {
-        audio.pause();
-        audio.currentTime = 0;
+      if (!opened) {
+        card.classList.add('opened');
+        music.currentTime = 33;
+        music.play();
+        opened = true;
       }
     });
+
+    // gerar estrelas e corações animados
+    const bg = document.getElementById('animated-bg');
+    for (let i = 0; i < 30; i++) {
+      const el = document.createElement('div');
+      el.className = Math.random() > 0.5 ? 'star' : 'heart';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (5 + Math.random() * 5) + 's';
+      el.style.animationDelay = Math.random() * 5 + 's';
+      bg.appendChild(el);
+    }
   </script></body>
 </html>
