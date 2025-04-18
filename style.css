@@ -1,73 +1,106 @@
-
 body {
-  background: linear-gradient(to top, #ffe0f0, #c4a0ff);
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   margin: 0;
+  background: linear-gradient(135deg, #ffe6f0, #ffe0ff);
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+}
+
+.animated-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.star, .heart, .flower, .flower2, .heart2, .star2 {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  opacity: 0.6;
+  animation: float 10s infinite linear;
+  pointer-events: none;
+}
+
+.star {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Emoji_u2728.svg/2048px-Emoji_u2728.svg.png') no-repeat center/contain;
+}
+
+.heart {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Emoji_u2764.svg/2048px-Emoji_u2764.svg.png') no-repeat center/contain;
+}
+
+.flower {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Emoji_u1f337.svg/2048px-Emoji_u1f337.svg.png') no-repeat center/contain;
+}
+
+.flower2 {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Emoji_u1f33b.svg/2048px-Emoji_u1f33b.svg.png') no-repeat center/contain;
+}
+
+.heart2 {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Emoji_u2764_FE0F.svg/2048px-Emoji_u2764_FE0F.svg.png') no-repeat center/contain;
+}
+
+.star2 {
+  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Emoji_u2b50.svg/2048px-Emoji_u2b50.svg.png') no-repeat center/contain;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh) rotate(0deg); }
+  100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+.container {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  margin: 150px auto;
+  perspective: 1000px;
 }
 
 .envelope {
-  width: 250px;
-  height: 150px;
-  background: #ffc1e3;
-  border-radius: 10px;
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.envelope:hover {
-  transform: scale(1.05);
-}
-
-.flap {
-  width: 0;
-  height: 0;
-  border-left: 125px solid transparent;
-  border-right: 125px solid transparent;
-  border-bottom: 75px solid #ff9ecf;
-  position: absolute;
-  top: -75px;
-  left: 0;
-}
-
-.card {
-  background: white;
   width: 100%;
   height: 100%;
+  background: #ffb6d9;
   border-radius: 10px;
-  padding: 20px;
-  box-sizing: border-box;
-  text-align: center;
-  display: none;
-  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
   justify-content: center;
-  animation: fadeIn 1s ease-in-out;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.8s ease;
+  transform-origin: bottom;
 }
 
-.card p {
-  font-size: 24px;
-  color: #ff4d88;
-  margin: 0;
-}
-
-.decorations {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #ffaad4;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.music {
+.paper {
   position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ff1493;
+  font-weight: bold;
+  transition: top 1s ease;
+  z-index: 1;
+}
+
+.opened .envelope {
+  transform: rotateX(-90deg);
+}
+
+.opened .paper {
+  top: 0;
 }
