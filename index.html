@@ -1,103 +1,119 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cartinha Interativa</title>
+  <title>Cartinha Fofa</title>
   <style>
     body {
-      background: linear-gradient(135deg, #ffd9ec, #ffe6fa);
       margin: 0;
-      padding: 0;
-      overflow: hidden;
+      background: linear-gradient(135deg, #ffe6f0, #ffe0ff);
       font-family: 'Arial', sans-serif;
-    }.animated-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -2;
-}
+      overflow: hidden;
+    }
 
-.star, .heart {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  opacity: 0.7;
-  animation: float 10s infinite linear;
-}
+    .animated-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
 
-.star {
-  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Emoji_u2728.svg/2048px-Emoji_u2728.svg.png') no-repeat center/contain;
-}
+    .star, .heart, .flower {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      opacity: 0.6;
+      animation: float 10s infinite linear;
+      pointer-events: none;
+    }
 
-.heart {
-  background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Emoji_u2764.svg/2048px-Emoji_u2764.svg.png') no-repeat center/contain;
-}
+    .star {
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Emoji_u2728.svg/2048px-Emoji_u2728.svg.png') no-repeat center/contain;
+    }
 
-@keyframes float {
-  0% { transform: translateY(100vh) rotate(0deg); }
-  100% { transform: translateY(-100vh) rotate(360deg); }
-}
+    .heart {
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Emoji_u2764.svg/2048px-Emoji_u2764.svg.png') no-repeat center/contain;
+    }
 
-.card-container {
-  position: relative;
-  width: 300px;
-  height: 200px;
-  margin: 100px auto;
-  perspective: 1000px;
-  cursor: pointer;
-}
+    .flower {
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Emoji_u1f337.svg/2048px-Emoji_u1f337.svg.png') no-repeat center/contain;
+    }
 
-.envelope {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #ffb6d9;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 1s;
-  backface-visibility: hidden;
-  z-index: 2;
-}
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100vh) rotate(360deg); }
+    }
 
-.paper {
-  position: absolute;
-  top: 100%;
-  width: 100%;
-  height: 100%;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: #ff1493;
-  font-weight: bold;
-  transition: top 1s;
-  z-index: 1;
-}
+    .container {
+      position: relative;
+      width: 320px;
+      height: 220px;
+      margin: 150px auto;
+      perspective: 1000px;
+    }
 
-.opened .envelope {
-  transform: rotateX(180deg);
-}
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: #ffb6d9;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.8s ease;
+      transform-origin: bottom;
+    }
 
-.opened .paper {
-  top: 0;
-}
+    .paper {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #ff1493;
+      font-weight: bold;
+      transition: top 1s ease;
+      z-index: 1;
+    }
 
+    .opened .envelope {
+      transform: rotateX(-90deg);
+    }
+
+    .opened .paper {
+      top: 0;
+    }
   </style>
 </head>
 <body>
-  <div class="animated-bg" id="animated-bg"></div>  <div class="card-container" id="card">
+  <div class="animated-bg" id="animated-bg"></div>
+
+  <div class="container" id="card">
     <div class="envelope">Clique para abrir</div>
     <div class="paper">I love you ♡</div>
-  </div>  <audio id="music" preload="auto">
-    <source src="/mnt/data/until_i_found_you_clip.mp3" type="audio/mpeg">
-  </audio>  <script>
+  </div>
+
+  <audio id="music" preload="auto">
+    <source src="until_i_found_you_clip.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
     const card = document.getElementById('card');
     const music = document.getElementById('music');
     let opened = false;
@@ -111,15 +127,17 @@
       }
     });
 
-    // gerar estrelas e corações animados
     const bg = document.getElementById('animated-bg');
-    for (let i = 0; i < 30; i++) {
+    const icons = ['star', 'heart', 'flower'];
+
+    for (let i = 0; i < 40; i++) {
       const el = document.createElement('div');
-      el.className = Math.random() > 0.5 ? 'star' : 'heart';
+      el.className = icons[Math.floor(Math.random() * icons.length)];
       el.style.left = Math.random() * 100 + 'vw';
-      el.style.animationDuration = (5 + Math.random() * 5) + 's';
-      el.style.animationDelay = Math.random() * 5 + 's';
+      el.style.animationDuration = (6 + Math.random() * 6) + 's';
+      el.style.animationDelay = Math.random() * 6 + 's';
       bg.appendChild(el);
     }
-  </script></body>
+  </script>
+</body>
 </html>
