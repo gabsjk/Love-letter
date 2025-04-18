@@ -1,30 +1,101 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Love Letter</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle, #ffd6ec, #ffcce1, #ffb3d1);
+      overflow: hidden;
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+    }.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.background span {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: float 10s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(100vh); }
+  100% { transform: translateY(-10vh); }
+}
+
+.card {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  background: #fff0f5;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  z-index: 1;
+}
+
+.card.open {
+  transform: rotateY(180deg);
+}
+
+.message {
+  font-size: 24px;
+  color: #ff4d88;
+  display: none;
+}
+
+.card.open .message {
+  display: block;
+}
+
+audio {
+  display: none;
+}
+
+  </style>
 </head>
 <body>
-  <div class="envelope" onclick="openCard()">
-    <div class="flap"></div>
-    <div class="card">
-      <p>I love you</p>
-      <div class="decorations">
-        <span class="heart">♥</span>
-        <span class="moon">☾</span>
-        <span class="flower">✿</span>
-        <span class="star">★</span>
-      </div>
-    </div>
-  </div>
+  <div class="background">
+    <!-- Estrelas, luas, corações e flores animadas -->
+    <span style="width:20px; height:20px; left:10%; top:90%; background:#fff3cd;"></span>
+    <span style="width:15px; height:15px; left:25%; top:95%; background:#ffd1dc;"></span>
+    <span style="width:25px; height:25px; left:50%; top:100%; background:#fff;"></span>
+    <span style="width:18px; height:18px; left:70%; top:85%; background:#ffe6f2;"></span>
+    <span style="width:22px; height:22px; left:90%; top:95%; background:#fcd5ce;"></span>
+  </div>  <div class="card" id="card">
+    <div class="message" id="message">I love you</div>
+  </div><audio id="loveAudio" src="until_i_found_you_clip.mp3"></audio>
 
-  <div class="music">
-    <iframe width="0" height="0" src="https://www.youtube.com/embed/8xg3vE8Ie_E?autoplay=1&loop=1&playlist=8xg3vE8Ie_E" 
-      frameborder="0" allow="autoplay" allowfullscreen></iframe>
-  </div>
+  <script>
+    const card = document.getElementById('card');
+    const audio = document.getElementById('loveAudio');
 
-  <script src="script.js"></script>
-</body>
+    card.addEventListener('click', () => {
+      card.classList.toggle('open');
+      if (card.classList.contains('open')) {
+        audio.currentTime = 0;
+        audio.play();
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
+  </script></body>
 </html>
