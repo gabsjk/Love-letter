@@ -7,9 +7,13 @@
   <style>
     body {
       margin: 0;
-      background: linear-gradient(135deg, #ffe6f0, #ffe0ff);
+      background: linear-gradient(135deg, #ffe6f0, #ffe0ff); /* Suave gradiente de fundo */
       font-family: 'Arial', sans-serif;
       overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .animated-bg {
@@ -22,10 +26,10 @@
 
     .star, .heart, .flower {
       position: absolute;
-      width: 25px;
-      height: 25px;
-      opacity: 0.6;
-      animation: float 10s infinite linear;
+      width: 30px; /* Tamanho um pouco maior */
+      height: 30px;
+      opacity: 0.8; /* Aumentando a visibilidade */
+      animation: float 12s infinite linear; /* Lenta e suave */
       pointer-events: none;
     }
 
@@ -50,14 +54,14 @@
       position: relative;
       width: 320px;
       height: 220px;
-      margin: 150px auto;
       perspective: 1000px;
     }
 
+    /* Estilo do envelope 💌 */
     .envelope {
       width: 100%;
       height: 100%;
-      background: #ffb6d9;
+      background: #ffadd9; /* Cor de envelope mais suave */
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       display: flex;
@@ -65,14 +69,15 @@
       justify-content: center;
       font-weight: bold;
       color: white;
-      font-size: 20px;
+      font-size: 22px; /* Ajustando o tamanho da fonte */
       cursor: pointer;
       position: relative;
       z-index: 2;
-      transition: transform 0.8s ease;
+      transition: transform 1s ease-in-out;
       transform-origin: bottom;
     }
 
+    /* Estilo do papel 📄 */
     .paper {
       position: absolute;
       top: 100%;
@@ -85,28 +90,39 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 28px; /* Tamanho maior para a frase */
       color: #ff1493;
       font-weight: bold;
-      transition: top 1s ease;
+      opacity: 0;
+      transition: top 1.2s ease-in-out, opacity 1s ease;
       z-index: 1;
     }
 
     .opened .envelope {
-      transform: rotateX(-90deg);
+      transform: rotateX(-120deg); /* Melhorando o efeito de abrir */
     }
 
     .opened .paper {
       top: 0;
+      opacity: 1;
+    }
+
+    /* Fonte mais estilizada para a frase */
+    .paper-text {
+      font-family: 'Dancing Script', cursive; /* Fonte cursiva estilizada */
+      font-size: 32px;
+      color: #ff1493;
     }
   </style>
+  <!-- Fonte do Google Fonts para uma aparência mais romântica -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="animated-bg" id="animated-bg"></div>
 
   <div class="container" id="card">
     <div class="envelope">Clique para abrir</div>
-    <div class="paper">I love you ♡</div>
+    <div class="paper"><span class="paper-text">I love you ♡</span></div>
   </div>
 
   <audio id="music" preload="auto">
@@ -120,11 +136,17 @@
 
     card.addEventListener('click', () => {
       if (!opened) {
+        // Abrir a carta
         card.classList.add('opened');
-        music.currentTime = 33;
-        music.play();
-        opened = true;
+        music.currentTime = 33; // Iniciar a música no tempo correto
+        music.play(); // Tocar música
+      } else {
+        // Fechar a carta
+        card.classList.remove('opened');
+        music.pause(); // Pausar música
+        music.currentTime = 33; // Resetar a música para o mesmo ponto
       }
+      opened = !opened; // Alternar o estado
     });
 
     const bg = document.getElementById('animated-bg');
@@ -134,8 +156,9 @@
       const el = document.createElement('div');
       el.className = icons[Math.floor(Math.random() * icons.length)];
       el.style.left = Math.random() * 100 + 'vw';
-      el.style.animationDuration = (6 + Math.random() * 6) + 's';
+      el.style.animationDuration = (8 + Math.random() * 6) + 's'; /* Lenta animação */
       el.style.animationDelay = Math.random() * 6 + 's';
+      el.style.top = Math.random() * 100 + 'vh';
       bg.appendChild(el);
     }
   </script>
